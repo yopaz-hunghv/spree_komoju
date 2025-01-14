@@ -1,4 +1,4 @@
-class CreateSpreeWebMoneys < ActiveRecord::Migration
+class CreateSpreeWebMoneys < ActiveRecord::Migration[7.1]
   def change
     create_table :spree_web_moneys do |t|
       t.string :email

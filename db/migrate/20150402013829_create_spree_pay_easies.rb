@@ -1,4 +1,4 @@
-class CreateSpreePayEasies < ActiveRecord::Migration
+class CreateSpreePayEasies < ActiveRecord::Migration[7.1]
   def change
     create_table :spree_pay_easies do |t|
       t.string  :email

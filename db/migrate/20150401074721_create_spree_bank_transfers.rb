@@ -1,4 +1,4 @@
-class CreateSpreeBankTransfers < ActiveRecord::Migration
+class CreateSpreeBankTransfers < ActiveRecord::Migration[7.1]
   def change
     create_table :spree_bank_transfers do |t|
       t.string  :email

@@ -7,12 +7,12 @@ module SpreeKomoju
     isolate_namespace Spree
     engine_name 'spree_komoju'
 
-    initializer "spree.gateway.payment_methods", after: "spree.register.payment_methods" do |app|
-      app.config.spree.payment_methods << Spree::Gateway::KomojuCreditCard
-      app.config.spree.payment_methods << Spree::Gateway::KomojuKonbini
-      app.config.spree.payment_methods << Spree::Gateway::KomojuBankTransfer
-      app.config.spree.payment_methods << Spree::Gateway::KomojuPayEasy
-      app.config.spree.payment_methods << Spree::Gateway::KomojuWebMoney
+    config.after_initialize do
+      Rails.application.config.spree.payment_methods << Spree::PaymentMethod::KomojuCreditCard
+      Rails.application.config.spree.payment_methods << Spree::PaymentMethod::KomojuKonbini
+      Rails.application.config.spree.payment_methods << Spree::PaymentMethod::KomojuBankTransfer
+      Rails.application.config.spree.payment_methods << Spree::PaymentMethod::KomojuPayEasy
+      Rails.application.config.spree.payment_methods << Spree::PaymentMethod::KomojuWebMoney
     end
 
     # use rspec for tests
@@ -25,6 +25,7 @@ module SpreeKomoju
         Rails.configuration.cache_classes ? require(c) : load(c)
       end
       require "active_merchant/billing/gateways/komoju"
+      Spree::CheckoutController.send :include, SpreeKomoju::ControllerHelpers
     end
 
     config.to_prepare &method(:activate).to_proc

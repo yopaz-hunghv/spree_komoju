@@ -1,4 +1,4 @@
-class CreateSpreeKonbinis < ActiveRecord::Migration
+class CreateSpreeKonbinis < ActiveRecord::Migration[7.1]
   def change
     create_table :spree_konbinis do |t|
       t.string  :convenience
