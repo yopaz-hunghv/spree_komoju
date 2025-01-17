@@ -33,7 +33,7 @@ module SpreeKomoju
     end
 
     def add_request_env_to_payments
-      @order.payments.each {|payment| payment.request_env = request.headers.env }
+      @order.payments.each { |payment| payment.request_env = request.headers.env }
     end
   end
 end

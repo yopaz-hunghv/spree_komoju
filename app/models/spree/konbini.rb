@@ -3,7 +3,7 @@ module Spree
     STORES = %i(lawson family-mart sunkus circle-k ministop daily-yamazaki seven-eleven)
 
     belongs_to :payment_method
-    belongs_to :user, class: Spree.user_class, foreign_key: 'user_id'
+    belongs_to :user, class_name: Spree.user_class.name, foreign_key: 'user_id'
     has_many :payments, as: :source
 
     validates :convenience, presence: true

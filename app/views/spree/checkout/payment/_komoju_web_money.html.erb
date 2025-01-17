@@ -49,26 +49,44 @@
 
 <%=
 javascript_tag <<-JS
-  SpreeKomoju = {
+  const SpreeKomoju = {
     addWebMoneyListener: function() {
-      $(".webmoney input.webmoney_pin").keyup(function() {
-        var length = $(this).val().length;
-        if (length == 4) {
-          $nextInput = $('input.webmoney_pin:eq(' + ($('input.webmoney_pin').index(this) + 1) + ')');
-          $nextInput.focus();
-        }
+      const webmoneyInputs = document.querySelectorAll(".webmoney input.webmoney_pin");
+
+      // Handle keyup event for webmoney_pin inputs
+      webmoneyInputs.forEach((input, index) => {
+        input.addEventListener("keyup", (event) => {
+          if (event.target.value.length === 4 && index + 1 < webmoneyInputs.length) {
+            webmoneyInputs[index + 1].focus();
+          }
+        });
       });
 
-      $(".webmoney").parents('form').has("input.webmoney_pin").submit(function() {
-        var prepaid_number = $("#ppn1").val() + $("#ppn2").val() + $("#ppn3").val() + $("#ppn4").val();
-        $(this).find("input[name*=prepaid_number]").val(prepaid_number)
-        $(this).find("input.webmoney_pin").prop('disabled', true)
-      })
-    }
-  }
+      // Handle form submit event
+      const webmoneyForms = Array.from(document.querySelectorAll(".webmoney")).map(
+        (element) => element.closest("form")
+      ).filter((form) => form && form.querySelector("input.webmoney_pin"));
 
-  $(document).ready(function() {
+      webmoneyForms.forEach((form) => {
+        form.addEventListener("submit", (event) => {
+          const ppn1 = document.getElementById("ppn1")?.value || "";
+          const ppn2 = document.getElementById("ppn2")?.value || "";
+          const ppn3 = document.getElementById("ppn3")?.value || "";
+          const ppn4 = document.getElementById("ppn4")?.value || "";
+          const prepaidNumber = ppn1 + ppn2 + ppn3 + ppn4;
+
+          const prepaidInput = form.querySelector("input[name*=prepaid_number]");
+          if (prepaidInput) prepaidInput.value = prepaidNumber;
+
+          const pinInputs = form.querySelectorAll("input.webmoney_pin");
+          pinInputs.forEach((input) => input.disabled = true);
+        });
+      });
+    }
+  };
+
+  document.addEventListener("DOMContentLoaded", () => {
     SpreeKomoju.addWebMoneyListener();
-  })
+  });
 JS
 %>
